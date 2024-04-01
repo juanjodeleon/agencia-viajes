@@ -19,8 +19,7 @@
 
     .container {
         display: flex;
-        flex-direction: column; /* Cambiado a columna para móviles */
-        align-items: center; /* Alineación centrada */
+        flex-direction: column;
         width: 100%;
         max-width: 1200px;
         padding: 20px;
@@ -29,7 +28,8 @@
 
     .form-container,
     .image-carousel {
-        width: 100%; /* Ancho completo */
+        width: 100%;
+        overflow: auto;
         padding: 20px;
         box-sizing: border-box;
     }
@@ -38,7 +38,7 @@
         background-color: #fff;
         border-radius: 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        margin-top: 20px; /* Espacio entre el carrusel y el formulario */
+        margin-top: 20px;
     }
 
     .form-container h2 {
@@ -83,16 +83,32 @@
     .image-carousel {
         position: relative;
         width: 100%;
-        max-width: 600px; /* Limita el ancho del carrusel en móviles */
-        height: auto; /* Altura automática */
-        margin-bottom: 20px; /* Espacio inferior */
+        max-height: 300px; /* Altura máxima del carrusel */
+        overflow: hidden;
     }
 
     .carousel-image {
-        max-width: 100%;
+        width: 100%;
+        height: auto;
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         object-fit: cover;
+    }
+
+    @media screen and (min-width: 600px) {
+        .container {
+            flex-direction: row;
+        }
+
+        .form-container {
+            margin-top: 0;
+            margin-left: 20px;
+        }
+
+        .image-carousel {
+            max-width: 50%; /* Ancho máximo del carrusel en pantallas grandes */
+            max-height: none; /* Restablecer la altura máxima */
+        }
     }
 </style>
 </head>
@@ -147,7 +163,6 @@
         </form>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
