@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generar Factura</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        width: 80%;
+        max-width: 600px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    .invoice {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+
+    .invoice-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .invoice-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .invoice-row label {
+        font-weight: bold;
+    }
+
+    .btn-confirmar,
+    .btn-imprimir {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn-imprimir {
+        background-color: #28a745;
+        margin-top: 10px;
+    }
+
+    .btn-confirmar:hover,
+    .btn-imprimir:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-icon {
+        margin-right: 5px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2><i class="fas fa-file-invoice"></i> Factura de Reserva</h2>
+    <div class="invoice">
+        <div class="invoice-row">
+            <label>Hotel:</label>
+            <span id="hotelName">Hotel Romano</span>
+        </div>
+        <div class="invoice-row">
+            <label>Precio por Persona:</label>
+            <span id="precioPersona">$50</span>
+        </div>
+        <div class="invoice-row">
+            <label>Cantidad de Personas:</label>
+            <span id="cantidadPersonas">1</span>
+        </div>
+        <div class="invoice-row">
+            <label>Alimentación (por día por persona):</label>
+            <span id="alimentacion">$20</span>
+        </div>
+        <div class="invoice-row">
+            <label>Vuelos (por persona):</label>
+            <span id="vuelos">$300</span>
+        </div>
+        <div class="invoice-row">
+            <label>IVA (19%):</label>
+            <span id="iva">$79.50</span>
+        </div>
+        <div class="invoice-row">
+            <label>Tasa de Aprobación:</label>
+            <span id="tasaAprobacion">$10.00</span>
+        </div>
+        <div class="invoice-row">
+            <label>Total con IVA:</label>
+            <span id="totalConIVA">$459.50</span>
+        </div>
+        <div class="invoice-row">
+            <label>Total con Gastos:</label>
+            <span id="totalConGastos">$469.50</span>
+        </div>
+    </div>
+    <button class="btn-confirmar"><i class="fas fa-check btn-icon"></i> Confirmar Reserva</button>
+    <button class="btn-imprimir"><i class="fas fa-print btn-icon"></i> Imprimir Factura</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener los parámetros de la URL
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        // Asignar valores de la factura
+        document.getElementById('hotelName').textContent = urlParams.get('hotel');
+        document.getElementById('precioPersona').textContent = '$' + urlParams.get('precio');
+        document.getElementById('cantidadPersonas').textContent = urlParams.get('cantidadPersonas');
+        document.getElementById('alimentacion').textContent = '$20';
+        document.getElementById('vuelos').textContent = '$300';
+        
+        // Cálculos de costos
+        var precioPorPersona = parseFloat(urlParams.get('precio'));
+        var cantidadPersonas = parseInt(urlParams.get('cantidadPersonas'));
+        var costoAlimentacion = 20;
+        var costoVuelos = 300;
+        var iva = 0.19; // Porcentaje de IVA (19%)
+        var tasaAprobacion = 10; // Tasa de aprobación fija
+        var costoTotal = precioPorPersona * cantidadPersonas;
+        var costoTotalAlimentacion = costoAlimentacion * cantidadPersonas;
+        var costoTotalVuelos = costoVuelos * cantidadPersonas;
+        var totalSinIVA = costoTotal + costoTotalAlimentacion + costoTotalVuelos;
+        var totalConIVA = totalSinIVA * (1 + iva);
+        var totalConGastos = totalConIVA + tasaAprobacion;
+
+        document.getElementById('iva').textContent = '$' + (totalSinIVA * iva).toFixed(2);
+        document.getElementById('tasaAprobacion').textContent = '$' + tasaAprobacion.toFixed(2);
+        document.getElementById('totalConIVA').textContent = '$' + totalConIVA.toFixed(2);
+        document.getElementById('totalConGastos').textContent = '$' + totalConGastos.toFixed(2);
+
+        // Botón para confirmar reserva
+        const btnConfirmar = document.querySelector('.btn-confirmar');
+        btnConfirmar.addEventListener('click', function() {
+            Swal.fire({
+                title: '¿Confirmar Reserva?',
+                text: '¿Estás seguro de confirmar la reserva?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#007bff',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirigir a la página de reserva
+                    window.location.href = 'Reserva.htm';
+                }
+            });
+        });
+
+        // Botón para imprimir factura
+        const btnImprimir = document.querySelector('.btn-imprimir');
+        btnImprimir.addEventListener('click', function() {
+            window.print();
+        });
+    });
+</script>
+</body>
+</html>
+

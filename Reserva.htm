@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Reserva de Viajes</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        max-width: 1200px;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .form-container,
+    .image-carousel {
+        flex: 1;
+        height: 100%;
+        overflow: auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .form-container {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-left: 20px; /* Espacio entre el carrusel y el formulario */
+    }
+
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    select,
+    input[type="number"],
+    input[type="date"],
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .image-carousel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carousel-image {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        object-fit: cover;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="image-carousel">
+        <img class="carousel-image" src="https://images.unsplash.com/photo-1520175480921-4edfa2983e0f?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8M3x8fGVufDB8fHx8fA%3D%3D" alt="Imagen 1">
+        <img class="carousel-image" src="https://hips.hearstapps.com/hmg-prod/images/manarola-1659345512.jpg?crop=1xw:0.8128612716763006xh;center,top&resize=1200:*" alt="Imagen 2">
+        <img class="carousel-image" src="https://www.blita.com/hubfs/italia-pais%20(1).jpg" alt="Imagen 3">
+        <!-- Añade más imágenes según sea necesario -->
+    </div>
+    <div class="form-container">
+        <h2>Reserva de Viajes</h2>
+        <form id="reservaForm" action="#" method="post">
+            <div class="form-group">
+                <label for="origen">Origen:</label>
+                <select id="origen" name="origen" required>
+                    <option value="">Selecciona una ciudad de origen</option>
+                    <option value="bogota">Bogotá</option>
+                    <option value="medellin">Medellín</option>
+                    <option value="cali">Cali</option>
+                    <option value="cartagena">Cartagena</option>
+                    <option value="barranquilla">Barranquilla</option>
+                    <option value="pereira">Pereira</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="destino">Destino:</label>
+                <select id="destino" name="destino" required>
+                    <option value="">Selecciona un destino</option>
+                    <option value="roma">Roma</option>
+                    <option value="venecia">Venecia</option>
+                    <option value="florencia">Florencia</option>
+                    <option value="milan">Milán</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cantidad">Cantidad de Personas:</label>
+                <input type="number" id="cantidad" name="cantidad" min="1" required>
+            </div>
+            <div class="form-group">
+                <label for="fechaIda">Fecha de Ida:</label>
+                <input type="date" id="fechaIda" name="fechaIda" required>
+            </div>
+            <div class="form-group">
+                <label for="fechaVuelta">Fecha de Vuelta:</label>
+                <input type="date" id="fechaVuelta" name="fechaVuelta" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Enviar">
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Mostrar popup con información resumida de Italia al cargar la página por primera vez
+    Swal.fire({
+        title: 'Información de Italia',
+        html: '<img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Flag_of_Italy.svg" alt="Bandera de Italia" style="width: 100px; height: auto; float: left; margin-right: 20px;">' +
+              '<p>Italia, oficialmente la República Italiana, es un país soberano miembro de la Unión Europea.</p>' +
+              '<p>Es conocido por su rica historia, cultura y arte. Algunos de los monumentos más famosos del mundo se encuentran en Italia, como el Coliseo Romano y la Torre Inclinada de Pisa.</p>' +
+              '<p>La población de Italia es de aproximadamente 60 millones de habitantes y su capital es Roma. Los italianos son conocidos por su pasión y hospitalidad.</p>' +
+              '<p>La cocina italiana es famosa en todo el mundo, con platos icónicos como la pasta, la pizza y el gelato.</p>',
+        icon: 'info',
+        confirmButtonText: 'Ok'
+    });
+});
+
+    // Base de datos de alojamiento por ciudad
+    var alojamiento = {
+        roma: [
+            {
+                hotel: "Hotel Romano",
+                precioPorPersona: 50,
+                descripcion: "Un elegante hotel en el corazón de Roma.",
+                imagen: "https://img.nh-hotels.net/67LnM/O4gzMK/original/Anantara_Palazzo_Naiadi_Rome_Hotel_Exterior_View.jpg?output-quality=70&resize=550:*&composite-to=center,center|550:278&background-color=white" // Imagen de ejemplo para Hotel Romano en Roma
+            },
+            {
+                hotel: "Hotel Coliseo",
+                precioPorPersona: 60,
+                descripcion: "Un hotel con vista al Coliseo Romano.",
+                imagen: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/0c/e6/3a/entrance-hotel-artemide.jpg?w=1200&h=-1&s=1" // Imagen de ejemplo para Hotel Coliseo en Roma
+            }
+        ],
+        venecia: [
+            {
+                hotel: "Hotel Veneciano",
+                precioPorPersona: 70,
+                descripcion: "Un hermoso hotel con vista al Gran Canal de Venecia.",
+                imagen: "https://dynl.mktgcdn.com/p/Of0WebqqZAVIzTSSXF38GWMtMaR2JypX7okkx1b0lo0/500x500" // Imagen de ejemplo para Hotel Veneciano en Venecia
+            },
+            {
+                hotel: "Hotel Laguna",
+                precioPorPersona: 80,
+                descripcion: "Un hotel con encanto en la isla de la Laguna.",
+                imagen: "https://media-cdn.tripadvisor.com/media/photo-s/13/48/27/1d/hotel-antico-doge.jpg" // Imagen de ejemplo para Hotel Laguna en Venecia
+            }
+        ],
+        florencia: [
+            {
+                hotel: "Hotel Florentino",
+                precioPorPersona: 55,
+                descripcion: "Un encantador hotel cerca del Duomo de Florencia.",
+                imagen: "https://media.traveler.es/photos/6373c3921d50734d67e31293/3:2/w_1998,h_1332,c_limit/Passalacqua-Preferred-Hotels-&-Resorts.jpg" // Imagen de ejemplo para Hotel Florentino en Florencia
+            },
+            {
+                hotel: "Hotel Renacimiento",
+                precioPorPersona: 65,
+                descripcion: "Un hotel con estilo renacentista en el centro histórico.",
+                imagen: "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_600,q_auto,w_600//hotelier-images/81/56/1f72b594b87d855f7d03171b6654079cea23e3cd87f17b4667fe84e91d0b.jpeg" // Imagen de ejemplo para Hotel Renacimiento en Florencia
+            }
+        ],
+        milan: [
+            {
+                hotel: "Hotel Milanés",
+                precioPorPersona: 60,
+                descripcion: "Un moderno hotel en el centro de Milán.",
+                imagen: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/aa/c2/dd/grand-hotel-la-favorita.jpg?w=1200&h=-1&s=1" // Imagen de ejemplo para Hotel Milanés en Milán
+            },
+            {
+                hotel: "Hotel Plaza",
+                precioPorPersona: 70,
+                descripcion: "Un hotel de lujo en la plaza principal de Milán.",
+                imagen: "https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2022/07/mejor-hotel-mundo-2764169.jpg?tf=3840x" // Imagen de ejemplo para Hotel Plaza en Milán
+            }
+        ]
+    };
+
+    document.getElementById('reservaForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evitar el envío del formulario
+
+        var origen = document.getElementById('origen').value;
+        var destino = document.getElementById('destino').value;
+        var cantidadPersonas = parseInt(document.getElementById('cantidad').value);
+        var fechaIda = document.getElementById('fechaIda').value;
+        var fechaVuelta = document.getElementById('fechaVuelta').value;
+
+        if (destino && cantidadPersonas > 0 && fechaIda && fechaVuelta) {
+            // Cálculo de días de viaje
+            var diasViaje = Math.ceil((new Date(fechaVuelta) - new Date(fechaIda)) / (1000 * 60 * 60 * 24));
+
+            // Mostrar información de alojamiento y calcular costos
+            var alojamientosHTML = alojamiento[destino].map(function(alojamiento) {
+                var costoTotalHotel = alojamiento.precioPorPersona * cantidadPersonas * diasViaje;
+                return "<div style='margin-bottom: 20px;'><img src='" + alojamiento.imagen + "' width='200'><br>" +
+                        "<strong>Hotel:</strong> " + alojamiento.hotel + "<br>" +
+                        "<strong>Precio por Persona:</strong> $" + alojamiento.precioPorPersona + "<br>" +
+                        "<strong>Costo Total para " + cantidadPersonas + " personas por " + diasViaje + " días:</strong> $" + costoTotalHotel + "<br>" +
+                        "<strong>Descripción:</strong> " + alojamiento.descripcion + "<br>" +
+                        "<button class='reservar-btn' data-hotel='" + alojamiento.hotel + "' data-precio='" + costoTotalHotel + "'>Reservar</button></div>";
+            }).join('');
+
+            Swal.fire({
+                title: "Alojamientos en " + destino,
+                html: alojamientosHTML,
+                icon: "info",
+                confirmButtonText: "Ok"
+            });
+
+            // Añadir evento de clic a los botones de reserva
+            document.querySelectorAll('.reservar-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var hotel = this.getAttribute('data-hotel');
+                    var precio = this.getAttribute('data-precio');
+                    var iva = 0.19; // Porcentaje de IVA (19%)
+                    var tasaAprobacion = 10; // Tasa de aprobación fija
+                    var costoTotal = parseFloat(precio);
+                    var totalConIVA = costoTotal * (1 + iva);
+                    var totalConGastos = totalConIVA + tasaAprobacion;
+
+                    // Abrir una nueva ventana con la página de generación de factura con los datos
+                    window.open("generar_factura.htm?hotel=" + encodeURIComponent(hotel) + "&precio=" + encodeURIComponent(precio) + "&cantidadPersonas=" + encodeURIComponent(cantidadPersonas) + "&diasViaje=" + encodeURIComponent(diasViaje) + "&iva=" + encodeURIComponent(iva) + "&tasaAprobacion=" + encodeURIComponent(tasaAprobacion) + "&totalConIVA=" + encodeURIComponent(totalConIVA) + "&totalConGastos=" + encodeURIComponent(totalConGastos), '_blank');
+                });
+            });
+        } else {
+            Swal.fire({
+                title: "Error",
+                text: "Por favor, completa todos los campos del formulario.",
+                icon: "error",
+                confirmButtonText: "Ok"
+            });
+        }
+    });
+    var slideIndex = 0;
+    carousel();
+
+    function carousel() {
+        var i;
+        var x = document.getElementsByClassName("carousel-image");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > x.length) {slideIndex = 1}
+        x[slideIndex-1].style.display = "block";
+        setTimeout(carousel, 5000); // Change image every 5 seconds
+    }
+</script>
+
+</body>
+</html>
